@@ -1,18 +1,46 @@
 $('document').ready(function () {
   // object creation
-  function Snonk (x, y) {
+  var Block = function (x, y) {
     this.x = x;
     this.y = y;
   }
+
+  Block.prototype.drawBlock = function () {
+    var x = this.x;
+    var y = this.y;
+    ctx.strokeRect(x, y, 4, 4);
+  }
+
+  Block.prototype.samesies = function (otherBlock) {
+    return (this.y === otherBlock.y && this.x === otherBlock.x);
+  }
+
+  var Snonk = function () {
+    this.segments = [
+      new Block(200, 200),
+      new Block(200, 204),
+      new Block(200, 208),
+      new Block(200, 212),
+      new Block(200, 216),
+      new Block(200, 220),
+      new Block(200, 224),
+      new Block(200, 228)
+    ];
+    this.direction = 'u';
+    this.nextDirection = 'u';
+  }
+
+  var snonk = new Snonk;
+
   var Apple = new Object();
 
   // general variables (oooh ahhhhh)!
   var score = 0;
+  var end = false;
 
   // Snonk variables?
   var snonk = new Snonk (200, 200);
   var directions = ['l', 'r', 'u', 'd'];
-  var direction;
 
   // Apple variables!
   function ApplePlace () {
@@ -27,50 +55,77 @@ $('document').ready(function () {
 
   // Snonk drawing uwu
   Snonk.prototype.draw = function () {
-    ctx.strokeRect(this.x, this.y, 5, 5);
-  }
+    for (var i = 0; i < this.segments.length; i++) {
+      this.segments[i].drawBlock()
+    }
+  };
 
   // Snonk direction stuff lol
   document.addEventListener("keydown", function (event) {
     if (event.defaultPrevented) {
       return;
-    } else if (event.key == "ArrowLeft" && direction != 'r') {
-      direction = 'l';
-    } else if (event.key == "ArrowRight" && direction != 'l') {
-      direction = 'r';
-    } else if (event.key == "ArrowUp" && direction != 'd') {
-      direction = 'u';
-    } else if (event.key == "ArrowDown" && direction != 'u') {
-      direction = 'd';
+    } else if (event.key == "ArrowLeft" && snonk.direction != 'r') {
+      snonk.nextDirection = 'l';
+    } else if (event.key == "ArrowRight" && snonk.direction != 'l') {
+      snonk.nextDirection = 'r';
+    } else if (event.key == "ArrowUp" && snonk.direction != 'd') {
+      snonk.nextDirection = 'u';
+    } else if (event.key == "ArrowDown" && snonk.direction != 'u') {
+      snonk.nextDirection = 'd';
     }
     event.preventDefault();
   });
 
-  Snonk.prototype.move = function (dir) {
-    if (dir == 'l') {
-      this.x -= 2;
-    } else if (dir == 'r') {
-      this.x += 2;
-    } else if (dir == 'u') {
-      this.y -= 2;
-    } else if (dir == 'd') {
-      this.y += 2;
-    }
-  }
-
   // Snonk collision w/ wall detection
   Snonk.prototype.touchWall = function () {
-    if (this.y <= 0 || this.y >= 395 || this.x <= 0 || this.x >= 395) {
-      return (true);
+    var head = this.segments[0];
+    if (head.y <= 0 || head.y >= 395 || head.x <= 0 || head.x >= 395) {
+      clearInterval(Game);
     }
   }
 
   // Snonk collision w/ apple detection
   Snonk.prototype.snonkApple = function () {
-    if (((this.x + 4 <= Apple.x + 8 || this.x <= Apple.x + 8) && (this.x >= Apple.x || this.x + 4 >= Apple.x)) && ((this.y + 4 <= Apple.y + 8 || this.y <= Apple.y) && (this.y >= Apple.y || this.y + 4 >= Apple.y))) {
-      score++;
-      console.log(score);
+    var head = this.segments[0];
+    if (((head.x + 4 <= Apple.x + 8 || head.x <= Apple.x + 8) && (head.x >= Apple.x || head.x + 4 >= Apple.x)) && ((head.y + 4 <= Apple.y + 8 || head.y <= Apple.y) && (head.y >= Apple.y || head.y + 4 >= Apple.y))) {
       ApplePlace();
+      return (true);
+    }
+  }
+
+  Snonk.prototype.move = function (dir) {
+    var head = this.segments[0];
+    var newHead;
+
+    this.direction = this.nextDirection;
+
+    if (dir == 'l') {
+      newHead = new Block(head.x - 4, head.y);
+    } else if (dir == 'r') {
+      newHead = new Block(head.x + 4, head.y);
+    } else if (dir == 'u') {
+      newHead = new Block(head.x, head.y - 4);
+    } else if (dir == 'd') {
+      newHead = new Block(head.x, head.y + 4);
+    }
+
+    this.segments.unshift(newHead);
+    if (this.snonkApple()) {
+      score++;
+      return;
+    } else {
+      this.segments.pop();
+    }
+  }
+
+  Snonk.prototype.contact = function () {
+    var head = this.segments[0];
+    var segment;
+    for (var i = 1; i < this.segments.length; i++) {
+      if (head.samesies(this.segments[i])) {
+        clearInterval(Game);
+        console.log("SAMESIES!!");
+      }
     }
   }
 
@@ -82,18 +137,26 @@ $('document').ready(function () {
     ctx.fill();
   }
 
+  // Drawing the score 'n stuff
+  function drawScore () {
+    if (score > 1) {
+      ctx.font = "20px Lato";
+      ctx.fillStyle = "#111111";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText("Score: " + score, 10, 10);
+    }
+  }
+
   // main game?
   ApplePlace();
 
   var Game = setInterval(function () {
     ctx.clearRect(0, 0, 400, 400);
-    snonk.move(direction);
-    snonk.snonkApple();
-    if (snonk.touchWall() == true) {
-      clearInterval(Game);
-    }
-
+    snonk.move(snonk.direction);
+    snonk.touchWall();
+    snonk.contact();
     snonk.draw();
     AppleDraw(Apple.x, Apple.y);
-  }, 16);
+  }, 30);
 });
