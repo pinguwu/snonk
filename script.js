@@ -139,12 +139,12 @@ $('document').ready(function () {
 
   // Drawing the score 'n stuff
   function drawScore () {
-    if (score > 1) {
-      ctx.font = "20px Lato";
-      ctx.fillStyle = "#111111";
+    if (score >= 1) {
+      ctx.font = "20px Courier";
+      ctx.fillStyle = "Black";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillText("Score: " + score, 10, 10);
+      ctx.fillText("Score: " + score, 20, 20);
     }
   }
 
@@ -153,6 +153,7 @@ $('document').ready(function () {
 
   var Game = setInterval(function () {
     ctx.clearRect(0, 0, 400, 400);
+    drawScore();
     snonk.move(snonk.direction);
     snonk.touchWall();
     snonk.contact();
