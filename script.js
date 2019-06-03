@@ -5,10 +5,21 @@ $('document').ready(function () {
     this.y = y;
   }
 
+  var Asteroid = function () {
+    this.asteroids = [];
+  }
+
   Block.prototype.drawBlock = function () {
     var x = this.x;
     var y = this.y;
     ctx.strokeRect(x, y, 4, 4);
+  }
+
+  Block.prototype.drawAsteroid = function () {
+    var x = this.x;
+    var y = this.y;
+
+    ctx.fillRect(x, y, 15, 15);
   }
 
   Block.prototype.samesies = function (otherBlock) {
@@ -22,9 +33,6 @@ $('document').ready(function () {
       new Block(200, 208),
       new Block(200, 212),
       new Block(200, 216),
-      new Block(200, 220),
-      new Block(200, 224),
-      new Block(200, 228)
     ];
     this.direction = 'u';
     this.nextDirection = 'u';
