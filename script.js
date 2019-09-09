@@ -95,7 +95,7 @@ $('document').ready(function () {
   // Snonk collision w/ apple detection
   Snonk.prototype.snonkApple = function () {
     var head = this.segments[0];
-    if (((head.x + 4 <= Apple.x + 8 || head.x <= Apple.x + 8) && (head.x >= Apple.x || head.x + 4 >= Apple.x)) && ((head.y + 4 <= Apple.y + 8 || head.y <= Apple.y) && (head.y >= Apple.y || head.y + 4 >= Apple.y))) {
+    if (((head.x + 4 <= Apple.x + 4 || head.x <= Apple.x + 4) && (head.x >= Apple.x || head.x + 4 >= Apple.x)) && ((head.y + 4 <= Apple.y + 4 || head.y <= Apple.y) && (head.y >= Apple.y || head.y + 4 >= Apple.y))) {
       ApplePlace();
       return (true);
     }
