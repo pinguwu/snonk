@@ -8,7 +8,7 @@ $('document').ready(function () {
   var Asteroid = function () {
     this.asteroids = [];
   }
-
+    
   Block.prototype.drawBlock = function () {
     var x = this.x;
     var y = this.y;
@@ -44,6 +44,7 @@ $('document').ready(function () {
 
   // general variables (oooh ahhhhh)!
   var score = 0;
+  var highscore = 0;
   var end = false;
 
   // Snonk variables?
@@ -84,10 +85,18 @@ $('document').ready(function () {
     event.preventDefault();
   });
 
+  // Set local high score
+  var setHigh = function () {
+    var element = document.GetElementById("highscore");
+    element.value = highscore;
+  }
+  
   // Snonk collision w/ wall detection
   Snonk.prototype.touchWall = function () {
     var head = this.segments[0];
     if (head.y <= 0 || head.y >= 395 || head.x <= 0 || head.x >= 395) {
+      highscore = score;
+      setHigh();
       clearInterval(Game);
     }
   }
@@ -155,6 +164,7 @@ $('document').ready(function () {
       ctx.fillText("Score: " + score, 20, 20);
     }
   }
+    
 
   // main game?
   ApplePlace();
