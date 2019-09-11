@@ -46,6 +46,7 @@ $('document').ready(function () {
   var score = 0;
   var highscore = 0;
   var end = false;
+  var passes = 0;
 
   // Snonk variables?
   var snonk = new Snonk (200, 200);
@@ -113,7 +114,6 @@ $('document').ready(function () {
   Snonk.prototype.move = function (dir) {
     var head = this.segments[0];
     var newHead;
-    var passes = 0;
 
     this.direction = this.nextDirection;
 
