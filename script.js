@@ -109,7 +109,7 @@ $('document').ready(function () {
       return (true);
     }
   }
-
+  
   Snonk.prototype.move = function (dir) {
     var head = this.segments[0];
     var newHead;
@@ -129,6 +129,9 @@ $('document').ready(function () {
     this.segments.unshift(newHead);
     if (this.snonkApple()) {
       score++;
+      for (i = 0; i < 3; i++) {
+        this.segments.unshift(newHead);
+      }
       return;
     } else {
       this.segments.pop();
