@@ -137,7 +137,7 @@ $('document').ready(function () {
     
     if (this.snonkApple()) {
       score++;
-      passes = 10;
+      passes = 50;
       return;
     }
   }
