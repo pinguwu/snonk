@@ -129,7 +129,7 @@ $('document').ready(function () {
     this.segments.unshift(newHead);
     if (this.snonkApple()) {
       score++;
-      for (i = 0; i < 3; i++) {
+      for (i = 0; i < 10; i++) {
         this.segments.unshift(newHead);
       }
       return;
