@@ -126,14 +126,12 @@ $('document').ready(function () {
       newHead = new Block(head.x, head.y + 4);
     }
 
-    this.segments.unshift(newHead);
+    
     if (this.snonkApple()) {
       score++;
-      for (i = 0; i < 10; i++) {
-        this.segments.unshift(newHead);
-      }
       return;
     } else {
+      this.segments.unshift(newHead);
       this.segments.pop();
     }
   }
