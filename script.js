@@ -113,6 +113,7 @@ $('document').ready(function () {
   Snonk.prototype.move = function (dir) {
     var head = this.segments[0];
     var newHead;
+    var passes = 0;
 
     this.direction = this.nextDirection;
 
@@ -125,14 +126,19 @@ $('document').ready(function () {
     } else if (dir == 'd') {
       newHead = new Block(head.x, head.y + 4);
     }
-
+    
+    this.segments.unshift(newHead);
+    
+    if (passes <= 0) {
+      this.segments.pop();
+    } else {
+      passes = passes - 1;
+    }
     
     if (this.snonkApple()) {
       score++;
+      passes = 10;
       return;
-    } else {
-      this.segments.unshift(newHead);
-      this.segments.pop();
     }
   }
 
