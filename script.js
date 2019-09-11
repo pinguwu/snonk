@@ -137,7 +137,7 @@ $('document').ready(function () {
     
     if (this.snonkApple()) {
       score++;
-      passes = this.segments.length() * this.segments.length();
+      passes = this.segments.length * this.segments.length;
       return;
     }
   }
