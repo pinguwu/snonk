@@ -148,6 +148,7 @@ $('document').ready(function () {
       if (head.samesies(this.segments[i])) {
         clearInterval(Game);
         console.log("SAMESIES!!");
+        setHigh(score);
       }
     }
   }
