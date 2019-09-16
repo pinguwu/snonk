@@ -88,7 +88,7 @@ $('document').ready(function () {
 
   // Set local high score
   var setHigh = function () {
-    var element = document.GetElementById("highscore");
+    var element = document.getElementById("highscore");
     element.value = highscore;
   }
   
