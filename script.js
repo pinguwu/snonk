@@ -87,9 +87,8 @@ $('document').ready(function () {
   });
 
   // Set local high score
-  var setHigh = function () {
-    var element = document.getElementById("highscore");
-    element.value = highscore;
+  var setHigh = function (x) {
+    $("#highscore").text(x);
   }
   
   // Snonk collision w/ wall detection
@@ -97,7 +96,7 @@ $('document').ready(function () {
     var head = this.segments[0];
     if (head.y <= 0 || head.y >= 395 || head.x <= 0 || head.x >= 395) {
       highscore = score;
-      setHigh();
+      setHigh(highscore);
       clearInterval(Game);
     }
   }
