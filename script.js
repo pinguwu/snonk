@@ -136,7 +136,7 @@ $('document').ready(function () {
     
     if (this.snonkApple()) {
       score++;
-      passes = this.segments.length * 2;
+      passes = 5;
       return;
     }
   }
